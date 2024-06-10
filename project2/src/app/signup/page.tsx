@@ -2,20 +2,45 @@
 //by using the above decorator we can make this page as the client component
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export default function SignupPage() {
+  const router=useRouter();
+  const [buttonDisabled,setButtonDisabled]=useState(false)
+  const [loading,setLoading]=useState(false)
   const [user, setuser] = useState({
     email: "",
     password: "",
     username: "",
   });
-  const onSignup = async () => {};
+  const onSignup = async () => {
+    setLoading(true)
+    try {
+   const res =  await  axios.post("/api/users/signup",user);
+   console.log("Signup success",res.data);   
+   router.push("/login") 
+    } catch (error:any) {
+      toast.error(error.message)
+    }finally{
+      setLoading(false);
+    }
+
+  };
+
+  useEffect(()=>{
+    if(user.email.length>0 && user.password.length>0 && user.username.length>0){
+      setButtonDisabled(false);
+    }else{
+      setButtonDisabled(true);
+    }
+  },[user])
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>SignUp</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
+      <div className="flex flex-col items-center justify-center py-2 p-4 shadow-xl shadow-cyan-500/50">
+      <h1 className="m-4 text-xl">{loading?"Signing...":"SignUp"}</h1>
       <hr />
       <label htmlFor="username">username :</label>
       <input
@@ -46,8 +71,9 @@ export default function SignupPage() {
         onChange={(e) => setuser({ ...user, password: e.target.value })}
         placeholder=""
       />
-      <button onClick={onSignup} className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">SignUp</button>
+      <button onClick={onSignup} className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">{buttonDisabled? "No Signup":"Signup"}</button>
       <Link href="/login">Already have an account ? Login</Link>
+      </div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ export default function LoginPage() {
   const onLogin = async () => {};
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
+       <div className="flex flex-col items-center justify-center py-2 p-4 shadow-xl shadow-cyan-500/50">
       <h1>Login</h1>
       <hr />
       <label htmlFor="email">email :</label>
@@ -37,6 +38,7 @@ export default function LoginPage() {
       />
       <button onClick={onLogin} className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">Login</button>
       <Link href="/signup">Don't have an account ? Signup</Link>
+      </div>
     </div>
   );
 }

@@ -32,13 +32,14 @@ export async function POST(request: NextRequest) {
     });
 
     const savedUser = await newUser.save();
+    const { password: pass, ...rest } = savedUser._doc;
 
     console.log(savedUser);
 
     return NextResponse.json({
       message: "User created Successfully",
       success: true,
-      savedUser,
+      rest,
     });
   } catch (error: any) {
     return NextResponse.json(
