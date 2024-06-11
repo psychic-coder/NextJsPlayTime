@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
     const path=request.nextUrl.pathname;
     
     //the public paths are login and signup
-    const isPublicPath=path==="/login"||path==="/signup"
+    const isPublicPath=path==="/login"||path==="/signup"||path==="/verifyemail";
     //we're checking if the token is present or not
    const token= request.cookies.get("token")?.value||""
 
@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 
 //in the below part we are mentioning the paths for which we want to apply the middleware
 export const config = {
-  matcher: ['/','/profile','/login','/signup'],
+  matcher: ['/','/profile','/login','/signup','/verifyemail'],
 }
